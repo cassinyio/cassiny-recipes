@@ -1,0 +1,61 @@
+##
+##    docker-compose-stack.yml
+##
+##    Orchestration file
+##
+##    This is the stack that runs Cassiny.io
+##    :copyright: (c) 2017, Cassiny.io OÜ.
+##    All rights reserved.
+##
+################################################
+
+version: "3.4"
+
+services:
+
+########### CONSUL DB ###########
+# https://hub.docker.com/_/consul/
+  consul:
+    image: consul:1.0.1
+    networks:
+      - cassiny-private
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+
+########### TRAEFIK ###########
+# https://hub.docker.com/r/library/traefik/
+  traefik:
+    image: traefik:1.5-alpine
+    depends_on:
+      - consul
+    networks:
+      - cassiny-private
+    ports:
+      - "8080:8080"
+      - "80:80"
+      - "443:443"
+    volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+    # https://docs.docker.com/compose/compose-file/#restart
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 5
+      placement:
+        constraints: [node.role == manager]
+    configs:
+      - source: traefik
+        target: /etc/traefik/traefik.toml
+
+configs:
+  traefik:
+    file: traefik.toml
+
+networks:
+    cassiny-private:
+      external: True
