@@ -4,8 +4,8 @@ This repository contains all Cassiny's recipes.
 
 ## Stack
 
-* gatekeeper
-* frontenders
+* [gatekeeper](gatekeeper/)
+* [frontenders](frontenders/)
 
 
 ## Network

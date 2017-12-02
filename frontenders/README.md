@@ -1,6 +1,6 @@
 # Frontenders recipe
 
-![The Frontenders](https://memegenerator.net/img/instances/500x/41294111/i-am-the-gatekeeper-you-shall-not-pass.jpg)
+![The Frontenders](https://memegenerator.net/img/instances/500x/64715580/you-have-much-to-learn-my-young-front-end-jedi-noob-apprentices.jpg)
 
 ## To run the Gatekeeper
 ```bash
