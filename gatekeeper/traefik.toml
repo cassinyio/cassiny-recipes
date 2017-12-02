@@ -2,7 +2,7 @@
 # Global configuration
 ################################################################
 
-debug = true
+debug = false
 logLevel = "INFO"
 
 defaultEntryPoints = ["http", "https"]

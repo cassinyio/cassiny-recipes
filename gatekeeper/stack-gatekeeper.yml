@@ -41,9 +41,9 @@ services:
       - "443:443"
     volumes:
        - /var/run/docker.sock:/var/run/docker.sock
-    # https://docs.docker.com/compose/compose-file/#restart
-    restart: always
     deploy:
+      restart_policy:
+        condition: on-failure
       mode: replicated
       replicas: 5
       placement:
