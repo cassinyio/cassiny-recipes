@@ -13,6 +13,7 @@ defaultEntryPoints = ["http", "https"]
     [entryPoints.https]
     address = ":443"
     compress = true
+    [entryPoints.https.tls]
 
 ################################################################
 # Consul KV configuration backend
@@ -43,3 +44,40 @@ endpoint = "unix:///var/run/docker.sock"
 watch = true
 exposedbydefault = false
 swarmmode = true
+
+################################################################
+# Acme configuration backend
+################################################################
+
+[acme]
+
+OnHostRule = true
+
+email = "barrachri@gmail.com"
+storage = "traefik/acme/account"
+entryPoint = "https"
+acmeLogging = true
+
+# Enable certificate generation on frontends Host rules.
+#
+# Optional
+#
+# onHostRule = true
+
+# CA server to use.
+# - Uncomment the line to run on the staging let's encrypt server.
+# - Leave comment to go to prod.
+#
+# Optional
+#
+# caServer = "https://acme-staging.api.letsencrypt.org/directory"
+
+# List of domains and subdomains for SSL certs
+
+[[acme.domains]]
+main = "cassiny.io"
+sans = ["www.cassiny.io","mcc.cassiny.io","docs.cassiny.io","registry.cassiny.io","webhooks.cassiny.io"]
+
+[[acme.domains]]
+main = "getcassiny.com"
+sans = ["www.getcassiny.com"]

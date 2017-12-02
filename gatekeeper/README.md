@@ -1,47 +1,17 @@
 
+# Gatekeeper recipe
 
-# To issue let's encrypt certs
+![The gatekeeper](https://memegenerator.net/img/instances/500x/41294111/i-am-the-gatekeeper-you-shall-not-pass.jpg)
+
+## To run the Gatekeeper
 ```bash
-acme.sh --issue \
--d cassiny.io \
--d www.cassiny.io \
--d mcc.cassiny.io \
--d docs.cassiny.io \
--d registry.cassiny.io \
---stateless
+make create
 ```
 
-
-# List of domains and subdomains for SSL certs
-
-### Cassiny main web site
-* cassiny.io
-* www.cassiny.io
-* getcassiny.com
-### Cassiny backedn
-* mcc.cassiny.io
-### Subdomain for the Probe
-* *.cssny.space
-### Subdomain for Docs
-* docs.cassiny.io
-### Subdomain for Registry
-* registry.cassiny.io
-
-
-## password
-docker run --entrypoint htpasswd registry:2 -Bbn cassiny 'chrstn88' > registry.password
-
-## Locally
-docker run -it --rm -p 80:80 -p 8443:8443 --name cassiny_nginx --network cassiny-network  cassiny/nginx:1.0
-docker network connect probes-network cassiny_nginx
-
-
-docker run -it --rm -p 80:80 -p 8080:8080 \
--v /var/run/docker.sock:/var/run/docker.sock \
--v /Users/christianbarra/Projects/cassiny/stack/traefik/ssl:/etc/traefik/ssl \
--v /Users/christianbarra/Projects/cassiny/stack/traefik/traefik.toml:/etc/traefik/traefik.toml \
---network traefik-net traefik
-
+## To remove the Gatekeeper
+```bash
+make remove
+```
 
 docker service create \
 --name whoami \
