@@ -1,0 +1,82 @@
+##
+##    stack-pillars.yml
+##
+##    Orchestration file
+##
+##    This is the stack that runs Cassiny.io
+##    :copyright: (c) 2017, Cassiny.io OÜ.
+##    All rights reserved.
+##
+################################################
+
+version: "3.4"
+
+services:
+
+########### POSTGRES DB ###########
+  # https://hub.docker.com/_/postgres/
+  postgres:
+    image: postgres:10.1
+    networks:
+      - cassiny-private
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=cassiny
+    volumes:
+      - data-volume:/var/lib/postgresql/data
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+        - node.labels.gpu == false
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+
+########### REDIS ###########
+  redis:
+    image: redis:4.0.2
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - cassiny-private
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+        - node.labels.gpu == false
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+
+########### NATS ###########
+  nats:
+    image: nats-streaming:0.6.0-linux
+    networks:
+      - cassiny-private
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+        - node.labels.gpu == false
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+volumes:
+  data-volume:
+
+networks:
+    cassiny-private:
+      external: True

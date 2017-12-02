@@ -2,12 +2,12 @@
 
 ![The Gatekeeper](https://memegenerator.net/img/instances/500x/41294111/i-am-the-gatekeeper-you-shall-not-pass.jpg)
 
-## To run the Gatekeeper
+## To create the gatekeeper
 ```bash
 make create
 ```
 
-## To remove the Gatekeeper
+## To remove the gatekeeper
 ```bash
 make remove
 ```
