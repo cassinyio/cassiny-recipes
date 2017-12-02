@@ -1,0 +1,76 @@
+##
+##    stack-frontenders.yml
+##
+##    Orchestration file
+##
+##    This is the stack that runs Cassiny.io
+##    :copyright: (c) 2017, Cassiny.io OÜ.
+##    All rights reserved.
+##
+################################################
+
+version: "3.4"
+
+services:
+
+########### www.cassiny.io ###########
+# https://hub.docker.com/r/cassinyio/www-cassiny-io/
+  www-cassiny-io:
+    image: cassinyio/www-cassiny-io
+    networks:
+      - cassiny-private
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      mode: replicated
+      replicas: 2
+      labels:
+        traefik.port: "8043"
+        traefik.enable: "true"
+        traefik.frontend.rule: "Host:mcc.cassiny.io,www.getcassiny.com"
+
+
+########### docs.cassiny.io ###########
+# https://hub.docker.com/r/cassinyio/docs-cassiny-io/
+  docs-cassiny-io:
+    image: cassinyio/docs-cassiny-io
+    networks:
+      - cassiny-private
+    deploy:
+      restart_policy:
+        condition: on-failure
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        traefik.port: "8043"
+        traefik.enable: "true"
+        traefik.frontend.rule: "Host:docs.cassiny.io"
+
+
+########### mcc.cassiny.io ###########
+# https://hub.docker.com/r/cassinyio/mcc-cassiny-io/
+  mcc-cassiny-io:
+    image: cassinyio/mcc-cassiny-io
+    networks:
+      - cassiny-private
+    deploy:
+      restart_policy:
+        condition: on-failure
+      mode: replicated
+      replicas: 2
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        traefik.port: "8043"
+        traefik.enable: "true"
+        traefik.frontend.rule: "Host:mcc.cassiny.io"
+
+
+networks:
+    cassiny-private:
+      external: True
