@@ -49,16 +49,6 @@ docker service create \
 --name www-cassiny-io \
 --label traefik.port=8043 \
 --label traefik.enable=true \
---label traefik.frontend.rule=Host:www.cassiny.io \
+--label traefik.frontend.rule=Host:www.cassiny.io,www.getcassiny.com \
 --network cassiny-private \
-www-cassiny-io:1.0
-
-export CDIR=`pwd`
-docker run \
- -v $CDIR/traefik.toml:/etc/traefik/traefik.toml  \
- --network cassiny-private \
- traefik \
- storeconfig \
- --consul \
- --consul.endpoint=consul:8500 \
- --consul.prefix="traefik"
+cassinyio/www-cassiny-io:0.0.1
