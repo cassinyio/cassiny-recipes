@@ -30,7 +30,7 @@ services:
       replicas: 1
       placement:
         constraints:
-        - node.labels.gpu == false
+          - node.labels.gpu == false
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -49,7 +49,7 @@ services:
       replicas: 1
       placement:
         constraints:
-        - node.labels.gpu == false
+          - node.labels.gpu == false
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -67,7 +67,7 @@ services:
       replicas: 1
       placement:
         constraints:
-        - node.labels.gpu == false
+          - node.labels.gpu == false
       restart_policy:
         condition: on-failure
         delay: 5s

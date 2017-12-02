@@ -25,6 +25,9 @@ services:
         delay: 5s
         max_attempts: 3
         window: 120s
+      placement:
+        constraints:
+          - node.labels.gpu == false
 
 
 ########### TRAEFIK ###########
@@ -47,7 +50,9 @@ services:
       mode: replicated
       replicas: 5
       placement:
-        constraints: [node.role == manager]
+        constraints:
+          - node.role == manager
+          - node.labels.gpu == false
     configs:
       - source: traefik
         target: /etc/traefik/traefik.toml
