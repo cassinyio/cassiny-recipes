@@ -29,15 +29,6 @@ watch = true
 prefix = "traefik"
 
 ################################################################
-# Web configuration backend
-################################################################
-
-# Enable web configuration backend
-[web]
-address = ":8080"
-readOnly = true
-
-################################################################
 # Docker configuration backend
 ################################################################
 
@@ -60,12 +51,6 @@ storage = "traefik/acme/account"
 entryPoint = "https"
 acmeLogging = true
 
-# Enable certificate generation on frontends Host rules.
-#
-# Optional
-#
-# onHostRule = true
-
 # CA server to use.
 # - Uncomment the line to run on the staging let's encrypt server.
 # - Leave comment to go to prod.
@@ -83,3 +68,7 @@ sans = ["www.cassiny.io","mcc.cassiny.io","docs.cassiny.io","registry.cassiny.io
 [[acme.domains]]
 main = "getcassiny.com"
 sans = ["www.getcassiny.com"]
+
+[[acme.domains]]
+main = "cssny.space"
+sans = ["www.cssny.space", "generate.cssny.space"]
