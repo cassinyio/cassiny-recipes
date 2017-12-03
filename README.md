@@ -6,6 +6,8 @@ This repository contains all Cassiny's recipes.
 
 * [gatekeeper](gatekeeper/)
 * [frontenders](frontenders/)
+* [pillars](pillars/)
+* [services](services/)
 
 
 ## Network
