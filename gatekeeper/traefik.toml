@@ -3,7 +3,7 @@
 ################################################################
 
 debug = false
-logLevel = "INFO"
+logLevel = "ERROR"
 
 defaultEntryPoints = ["http", "https"]
 [entryPoints]
@@ -33,6 +33,7 @@ prefix = "traefik"
 ################################################################
 
 [docker]
+
 endpoint = "unix:///var/run/docker.sock"
 watch = true
 exposedbydefault = false

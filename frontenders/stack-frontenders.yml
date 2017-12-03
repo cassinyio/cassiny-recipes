@@ -33,7 +33,7 @@ services:
       labels:
         traefik.port: "8043"
         traefik.enable: "true"
-        traefik.frontend.rule: "Host:mcc.cassiny.io,www.getcassiny.com,www.cssny.space"
+        traefik.frontend.rule: "Host:www.cassiny.io,www.getcassiny.com,www.cssny.space"
 
 
 ########### docs.cassiny.io ###########
