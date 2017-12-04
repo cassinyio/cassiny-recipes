@@ -14,8 +14,9 @@ make remove
 
 ## Private an public key
 
-You need to generate a public and private key and put them inside secrets.
+You need to generate a private and public key and put them inside the secrets folder.
 
+```
 Private key -> ./secrets/private_key.key
-
 Public key -> ./secrets/public_key.key
+```
