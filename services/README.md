@@ -18,5 +18,5 @@ You need to generate a private and public key and put them inside the secrets fo
 
 ```
 Private key -> ./secrets/private_key.key
-Public key -> ./secrets/public_key.key
+Public key -> ./secrets/public_key.pub
 ```
