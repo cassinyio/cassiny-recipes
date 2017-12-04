@@ -1,0 +1,168 @@
+################################################
+##
+##    stack-services.yml
+##
+##    Orchestration file
+##
+##    This is the stack that runs Cassiny.io
+##    :copyright: (c) 2017, Cassiny.io OÜ.
+##    All rights reserved.
+##
+################################################
+
+version: "3.4"
+
+services:
+
+########### cassiny-auth ###########
+# https://hub.docker.com/r/cassinyio/cassiny-auth/
+  cassiny-auth:
+    image: cassinyio/cassiny-auth:latest
+    networks:
+      - cassiny-private
+      - cassiny-public
+    env_file:
+     - ../environment/.env
+    secrets:
+      - source: private_key
+        target: /keys/private_key.key
+      - source: public_key
+        target: /keys/public_key.pub
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.labels.gpu == false
+          - node.role == manager
+      mode: replicated
+      replicas: 1
+      labels:
+        traefik.port: "8080"
+        traefik.enable: "true"
+        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /auth"
+        traefik.docker.network: "cassiny-private"
+
+########### cassiny-dockerevents ###########
+# https://hub.docker.com/r/cassinyio/cassiny-dockerevents/
+  cassiny-dockerevents:
+    image: cassinyio/cassiny-dockerevents:latest
+    networks:
+      - cassiny-private
+    env_file:
+      - ../environment/.env
+    secrets:
+      - source: public_key
+        target: /keys/public_key.pub
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.labels.gpu == false
+          - node.role == manager
+      mode: replicated
+      replicas: 1
+
+########### cassiny-webhooks ###########
+# https://hub.docker.com/r/cassinyio/cassiny-webhooks/
+  cassiny-webhooks:
+    image: cassinyio/cassiny-webhooks:latest
+    networks:
+      - cassiny-private
+    env_file:
+      - ../environment/.env
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.gpu == false
+      mode: replicated
+      replicas: 1
+      labels:
+        traefik.port: "8080"
+        traefik.enable: "true"
+        traefik.frontend.rule: "Host:webhooks.cassiny.io"
+        traefik.docker.network: "cassiny-private"
+
+########### cassiny-spawner ###########
+# https://hub.docker.com/r/cassinyio/cassiny-spawner/
+  cassiny-spawner:
+    image: cassinyio/cassiny-spawner:latest
+    networks:
+      - cassiny-private
+    env_file:
+      - ../environment/.env
+    secrets:
+      - source: public_key
+        target: /keys/public_key.pub
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.labels.gpu == false
+          - node.role == manager
+      mode: replicated
+      replicas: 1
+      labels:
+        traefik.port: "8080"
+        traefik.enable: "true"
+        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /spawner"
+        traefik.docker.network: "cassiny-private"
+
+
+########### cassiny-websockets ###########
+# https://hub.docker.com/r/cassinyio/cassiny-websockets/
+  cassiny-auth:
+    image: cassinyio/cassiny-websockets:latest
+    networks:
+      - cassiny-private
+    env_file:
+      - ../environment/.env
+    secrets:
+      - source: public_key
+        target: public_key
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.labels.gpu == false
+          - node.role == manager
+      mode: replicated
+      replicas: 1
+      labels:
+        traefik.port: "8080"
+        traefik.enable: "true"
+        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /ws"
+        traefik.docker.network: "cassiny-private"
+
+networks:
+    cassiny-private:
+      external: True
+    cassiny-public:
+      external: True
+
+secrets:
+  public_key:
+    file: ./secrets/public_key.pub
+  private_key:
+    file: ./secrets/private_key.key
