@@ -38,25 +38,6 @@ services:
         window: 120s
 
 
-########### REDIS ###########
-  redis:
-    image: redis:4.0.2
-    command: ["redis-server", "--appendonly", "yes"]
-    networks:
-      - cassiny-private
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.labels.gpu == false
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-
-
 ########### NATS ###########
   nats:
     image: nats-streaming:0.6.0-linux
