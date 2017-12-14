@@ -35,3 +35,29 @@ docker network create --driver overlay --attachable cassiny-public
 docker node update --label-add gpu=false {id_of_node}
 docker node update --label-add public=false {id_of_node}
 ```
+
+## Start the stacks
+
+Update environment/.env
+
+From `gatekeeper/`
+```
+docker stack deploy gatekeeper -c stack-gatekeeper.yml
+```
+
+From `frontenders/`
+```
+docker stack deploy frontenders -c stack-frontenders.yml
+```
+
+From `pillars/`
+```
+docker stack deploy pillars -c stack-pillars.yml
+```
+
+Wait for the activation of the pillars before starting the services.
+
+From `services/`
+```
+docker stack deploy services -c stack-services.yml
+```
