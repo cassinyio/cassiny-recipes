@@ -17,6 +17,6 @@ make remove
 You need to generate a private and public key and put them inside the secrets folder.
 
 ```
-Private key -> ./secrets/private_key.key
+Private key -> ./secrets/private.key
 Public key -> ./secrets/public_key.pub
 ```

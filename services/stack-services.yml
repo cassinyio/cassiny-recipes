@@ -69,31 +69,10 @@ services:
           - node.role == manager
       mode: replicated
       replicas: 1
-
-########### cassiny-webhooks ###########
-# https://hub.docker.com/r/cassinyio/cassiny-webhooks/
-  cassiny-webhooks:
-    image: cassinyio/cassiny-webhooks:latest
-    networks:
-      - cassiny-private
-    env_file:
-      - ../environment/.env
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      placement:
-        constraints:
-          - node.role == manager
-          - node.labels.gpu == false
-      mode: replicated
-      replicas: 1
-      labels:
+    labels:
         traefik.port: "8080"
         traefik.enable: "true"
-        traefik.frontend.rule: "Host:webhooks.cassiny.io"
+        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /events, /logs"
         traefik.docker.network: "cassiny-private"
 
 ########### cassiny-spawner ###########
@@ -125,6 +104,31 @@ services:
         traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /spawner"
         traefik.docker.network: "cassiny-private"
 
+########### cassiny-webhooks ###########
+# https://hub.docker.com/r/cassinyio/cassiny-webhooks/
+  cassiny-webhooks:
+    image: cassinyio/cassiny-webhooks:latest
+    networks:
+      - cassiny-private
+    env_file:
+      - ../environment/.env
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.gpu == false
+      mode: replicated
+      replicas: 1
+      labels:
+        traefik.port: "8080"
+        traefik.enable: "true"
+        traefik.frontend.rule: "Host:webhooks.cassiny.io"
+        traefik.docker.network: "cassiny-private"
 
 ########### cassiny-websockets ###########
 # https://hub.docker.com/r/cassinyio/cassiny-websockets/
@@ -165,4 +169,4 @@ secrets:
   public_key:
     file: ./secrets/public_key.pub
   private_key:
-    file: ./secrets/private_key.key
+    file: ./secrets/private.key
