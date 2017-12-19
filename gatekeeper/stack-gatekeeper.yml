@@ -33,11 +33,12 @@ services:
 ########### TRAEFIK ###########
 # https://hub.docker.com/r/library/traefik/
   traefik:
-    image: traefik:1.5-alpine
+    image: traefik:v1.4.5
     depends_on:
       - consul
     networks:
       - cassiny-private
+      - cassiny-public
     ports:
       - "8080:8080"
       - "80:80"
@@ -48,7 +49,7 @@ services:
       restart_policy:
         condition: on-failure
       mode: replicated
-      replicas: 5
+      replicas: 2
       placement:
         constraints:
           - node.role == manager
@@ -63,4 +64,6 @@ configs:
 
 networks:
     cassiny-private:
+      external: True
+    cassiny-public:
       external: True
