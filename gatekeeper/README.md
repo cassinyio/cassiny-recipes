@@ -4,10 +4,10 @@
 
 ## To create the gatekeeper
 ```bash
-make create
+make start
 ```
 
 ## To remove the gatekeeper
 ```bash
-make remove
+make stop
 ```

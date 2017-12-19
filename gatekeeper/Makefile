@@ -1,9 +1,9 @@
 # Some simple testing tasks (sorry, UNIX only).
 
-create:
+start:
 	@docker stack deploy gatekeeper -c stack-gatekeeper.yml
 
-remove:
+stop:
 	@docker stack rm gatekeeper
 
 logs:
