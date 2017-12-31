@@ -4,7 +4,6 @@
 ##
 ##    Orchestration file
 ##
-##    This is the stack that runs Cassiny.io
 ##    :copyright: (c) 2017, Cassiny.io OÜ.
 ##    All rights reserved.
 ##
@@ -46,34 +45,6 @@ services:
         traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /auth"
         traefik.docker.network: "cassiny-private"
 
-########### cassiny-dockerevents ###########
-# https://hub.docker.com/r/cassinyio/cassiny-dockerevents/
-  cassiny-dockerevents:
-    image: cassinyio/cassiny-dockerevents:latest
-    networks:
-      - cassiny-private
-    env_file:
-      - ../environment/.env
-    secrets:
-      - source: public_key
-        target: /keys/public_key.pub
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      placement:
-        constraints:
-          - node.labels.gpu == false
-          - node.role == manager
-      mode: replicated
-      replicas: 1
-    labels:
-        traefik.port: "8080"
-        traefik.enable: "true"
-        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /events, /logs"
-        traefik.docker.network: "cassiny-private"
 
 ########### cassiny-spawner ###########
 # https://hub.docker.com/r/cassinyio/cassiny-spawner/
@@ -86,6 +57,8 @@ services:
     secrets:
       - source: public_key
         target: /keys/public_key.pub
+    volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       restart_policy:
         condition: on-failure
@@ -112,6 +85,8 @@ services:
       - cassiny-private
     env_file:
       - ../environment/.env
+    volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       restart_policy:
         condition: on-failure
@@ -140,7 +115,7 @@ services:
       - ../environment/.env
     secrets:
       - source: public_key
-        target: public_key
+        target: /keys/public_key.pub
     deploy:
       restart_policy:
         condition: on-failure
