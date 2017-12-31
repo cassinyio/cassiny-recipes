@@ -9,4 +9,4 @@ stop:
 logs:
 	@docker service logs gatekeeper_traefik
 
-.PHONY: create remove logs
+.PHONY: create stop logs

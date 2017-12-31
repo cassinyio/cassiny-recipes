@@ -13,23 +13,6 @@ version: "3.4"
 
 services:
 
-########### CONSUL DB ###########
-# https://hub.docker.com/_/consul/
-  consul:
-    image: consul:1.0.1
-    networks:
-      - cassiny-private
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      placement:
-        constraints:
-          - node.labels.gpu == false
-
-
 ########### TRAEFIK ###########
 # https://hub.docker.com/r/library/traefik/
   traefik:
@@ -45,6 +28,22 @@ services:
       - "443:443"
     volumes:
        - /var/run/docker.sock:/var/run/docker.sock
+    secrets:
+      - source: cassiny_io_key
+        target: /keys/cassiny_io.key
+      - source: cassiny_io_cert
+        target: /keys/cassiny_io.cert
+
+      - source: getcassiny_com_key
+        target: /keys/getcassiny_com.key
+      - source: getcassiny_com_cert
+        target: /keys/getcassiny_com.cert
+
+      - source: cssny_space_key
+        target: /keys/cssny_space.key
+      - source: cssny_space_cert
+        target: /keys/cssny_space.cert
+
     deploy:
       restart_policy:
         condition: on-failure
@@ -67,3 +66,17 @@ networks:
       external: True
     cassiny-public:
       external: True
+
+secrets:
+  cassiny_io_key:
+    file: ./secrets/cassiny.io.key
+  cassiny_io_cert:
+    file: ./secrets/cassiny.io.cer
+  getcassiny_com_key:
+    file: ./secrets/getcassiny.com.key
+  getcassiny_com_cert:
+    file: ./secrets/getcassiny.com.cer
+  cssny_space_key:
+    file: ./secrets/cssny.space.key
+  cssny_space_cert:
+    file: ./secrets/cssny.space.cer
