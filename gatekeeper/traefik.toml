@@ -17,14 +17,9 @@ defaultEntryPoints = ["http", "https"]
     compress = true
         [entryPoints.https.tls]
             [[entryPoints.https.tls.certificates]]
-            # www.cassiny.io, mcc.cassiny.io, docs.cassiny.io, registry.cassiny.io, webhooks.cassiny.io
+            # mcc.cassiny.io, registry.cassiny.io, webhooks.cassiny.io
             CertFile = "/keys/cassiny_io.cert"
             KeyFile = "/keys/cassiny_io.key"
-
-            [[entryPoints.https.tls.certificates]]
-            # getcassiny.com, www.getcassiny.com
-            CertFile = "/keys/getcassiny_com.cert"
-            KeyFile = "/keys/getcassiny_com.key"
 
             [[entryPoints.https.tls.certificates]]
             # cssny.space, www.cssny.space

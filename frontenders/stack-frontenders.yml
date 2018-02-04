@@ -13,49 +13,6 @@ version: "3.4"
 
 services:
 
-########### www.cassiny.io ###########
-# https://hub.docker.com/r/cassinyio/www-cassiny-io/
-  www-cassiny-io:
-    image: cassinyio/www-cassiny-io:latest
-    networks:
-      - cassiny-private
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      placement:
-        constraints:
-          - node.labels.gpu == false
-      mode: replicated
-      replicas: 2
-      labels:
-        traefik.port: "8043"
-        traefik.enable: "true"
-        traefik.frontend.rule: "Host:cassiny.io,www.cassiny.io,getcassiny.com,www.getcassiny.com,www.cssny.space"
-
-
-########### docs.cassiny.io ###########
-# https://hub.docker.com/r/cassinyio/docs-cassiny-io/
-  docs-cassiny-io:
-    image: cassinyio/docs-cassiny-io:latest
-    networks:
-      - cassiny-private
-    deploy:
-      restart_policy:
-        condition: on-failure
-      mode: replicated
-      replicas: 2
-      placement:
-        constraints:
-          - node.labels.gpu == false
-      labels:
-        traefik.port: "8043"
-        traefik.enable: "true"
-        traefik.frontend.rule: "Host:docs.cassiny.io"
-
-
 ########### mcc.cassiny.io ###########
 # https://hub.docker.com/r/cassinyio/mcc-cassiny-io/
   mcc-cassiny-io:
