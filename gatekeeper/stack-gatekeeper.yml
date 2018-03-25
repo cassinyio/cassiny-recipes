@@ -32,11 +32,6 @@ services:
       - source: cassiny_io_cert
         target: /keys/cassiny_io.cert
 
-      - source: getcassiny_com_key
-        target: /keys/getcassiny_com.key
-      - source: getcassiny_com_cert
-        target: /keys/getcassiny_com.cert
-
       - source: cssny_space_key
         target: /keys/cssny_space.key
       - source: cssny_space_cert
@@ -70,10 +65,6 @@ secrets:
     file: ./secrets/cassiny.io.key
   cassiny_io_cert:
     file: ./secrets/cassiny.io.cer
-  getcassiny_com_key:
-    file: ./secrets/getcassiny.com.key
-  getcassiny_com_cert:
-    file: ./secrets/getcassiny.com.cer
   cssny_space_key:
     file: ./secrets/cssny.space.key
   cssny_space_cert:
