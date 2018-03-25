@@ -40,7 +40,7 @@ services:
 
 ########### NATS ###########
   nats:
-    image: nats-streaming:0.6.0-linux
+    image: nats-streaming:0.7.0-linux
     networks:
       - cassiny-private
     deploy:

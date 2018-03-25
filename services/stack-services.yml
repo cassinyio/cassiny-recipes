@@ -36,13 +36,12 @@ services:
       placement:
         constraints:
           - node.labels.gpu == false
-          - node.role == manager
       mode: replicated
       replicas: 1
       labels:
         traefik.port: "8080"
         traefik.enable: "true"
-        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /auth"
+        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /api/auth"
         traefik.docker.network: "cassiny-private"
 
 
@@ -74,8 +73,32 @@ services:
       labels:
         traefik.port: "8080"
         traefik.enable: "true"
-        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /spawner"
+        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /api/spawner"
         traefik.docker.network: "cassiny-private"
+
+########### cassiny-infrastructure ###########
+# https://hub.docker.com/r/cassinyio/cassiny-infrastructure/
+  cassiny-auth:
+    image: cassinyio/cassiny-infrastructure:latest
+    networks:
+      - cassiny-private
+    env_file:
+      - ../environment/.env
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.labels.gpu == false
+          - node.role == manager
+      mode: replicated
+      replicas: 1
+
 
 ########### cassiny-webhooks ###########
 # https://hub.docker.com/r/cassinyio/cassiny-webhooks/
@@ -125,7 +148,6 @@ services:
       placement:
         constraints:
           - node.labels.gpu == false
-          - node.role == manager
       mode: replicated
       replicas: 1
       labels:
