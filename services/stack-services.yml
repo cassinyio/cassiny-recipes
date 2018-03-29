@@ -24,9 +24,9 @@ services:
      - ../environment/.env
     secrets:
       - source: private_key
-        target: /keys/private.key
+        target: /src/keys/private.key
       - source: public_key
-        target: /keys/public.key
+        target: /src/keys/public.key
     deploy:
       restart_policy:
         condition: on-failure
@@ -55,7 +55,7 @@ services:
       - ../environment/.env
     secrets:
       - source: public_key
-        target: /keys/public.key
+        target: /src/keys/public.key
     volumes:
        - /var/run/docker.sock:/var/run/docker.sock
     deploy:
@@ -78,13 +78,13 @@ services:
 
 ########### cassiny-infrastructure ###########
 # https://hub.docker.com/r/cassinyio/cassiny-infrastructure/
-  cassiny-auth:
+  cassiny-infrastructure:
     image: cassinyio/cassiny-infrastructure:latest
     networks:
       - cassiny-private
     env_file:
       - ../environment/.env
-     volumes:
+    volumes:
        - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       restart_policy:
@@ -98,7 +98,6 @@ services:
           - node.role == manager
       mode: replicated
       replicas: 1
-
 
 ########### cassiny-webhooks ###########
 # https://hub.docker.com/r/cassinyio/cassiny-webhooks/
