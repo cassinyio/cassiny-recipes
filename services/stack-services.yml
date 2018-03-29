@@ -24,9 +24,9 @@ services:
      - ../environment/.env
     secrets:
       - source: private_key
-        target: /keys/private_key.key
+        target: /keys/private.key
       - source: public_key
-        target: /keys/public_key.pub
+        target: /keys/public.key
     deploy:
       restart_policy:
         condition: on-failure
@@ -55,7 +55,7 @@ services:
       - ../environment/.env
     secrets:
       - source: public_key
-        target: /keys/public_key.pub
+        target: /keys/public.key
     volumes:
        - /var/run/docker.sock:/var/run/docker.sock
     deploy:
@@ -128,34 +128,6 @@ services:
         traefik.frontend.rule: "Host:webhooks.cassiny.io"
         traefik.docker.network: "cassiny-private"
 
-########### cassiny-websockets ###########
-# https://hub.docker.com/r/cassinyio/cassiny-websockets/
-  cassiny-auth:
-    image: cassinyio/cassiny-websockets:latest
-    networks:
-      - cassiny-private
-    env_file:
-      - ../environment/.env
-    secrets:
-      - source: public_key
-        target: /keys/public_key.pub
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-      placement:
-        constraints:
-          - node.labels.gpu == false
-      mode: replicated
-      replicas: 1
-      labels:
-        traefik.port: "8080"
-        traefik.enable: "true"
-        traefik.frontend.rule: "Host:mcc.cassiny.io;PathPrefix: /ws"
-        traefik.docker.network: "cassiny-private"
-
 networks:
     cassiny-private:
       external: True
@@ -164,6 +136,6 @@ networks:
 
 secrets:
   public_key:
-    file: ./secrets/public_key.pub
+    file: ./secrets/public.key
   private_key:
     file: ./secrets/private.key
