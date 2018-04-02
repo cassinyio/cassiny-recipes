@@ -16,7 +16,7 @@ services:
 ########### cassiny-auth ###########
 # https://hub.docker.com/r/cassinyio/cassiny-auth/
   cassiny-auth:
-    image: cassinyio/cassiny-auth:latest
+    image: cassinyio/cassiny-auth:fae5010
     networks:
       - cassiny-private
       - cassiny-public
@@ -48,7 +48,7 @@ services:
 ########### cassiny-spawner ###########
 # https://hub.docker.com/r/cassinyio/cassiny-spawner/
   cassiny-spawner:
-    image: cassinyio/cassiny-spawner:latest
+    image: cassinyio/cassiny-spawner:24fafe5
     networks:
       - cassiny-private
     env_file:
@@ -79,7 +79,7 @@ services:
 ########### cassiny-infrastructure ###########
 # https://hub.docker.com/r/cassinyio/cassiny-infrastructure/
   cassiny-infrastructure:
-    image: cassinyio/cassiny-infrastructure:latest
+    image: cassinyio/cassiny-infrastructure:0e155224
     networks:
       - cassiny-private
     env_file:
@@ -99,10 +99,31 @@ services:
       mode: replicated
       replicas: 1
 
+########### cassiny-watcher ###########
+# https://hub.docker.com/r/cassinyio/cassiny-watcher/
+  cassiny-auth:
+    image: cassinyio/cassiny-watcher:204dee2
+    networks:
+      - cassiny-private
+    env_file:
+     - ../environment/.env
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      placement:
+        constraints:
+          - node.labels.gpu == false
+      mode: global
+
 ########### cassiny-webhooks ###########
 # https://hub.docker.com/r/cassinyio/cassiny-webhooks/
   cassiny-webhooks:
-    image: cassinyio/cassiny-webhooks:latest
+    image: cassinyio/cassiny-webhooks:cb73a7e
     networks:
       - cassiny-private
     env_file:
