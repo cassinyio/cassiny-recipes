@@ -101,7 +101,7 @@ services:
 
 ########### cassiny-watcher ###########
 # https://hub.docker.com/r/cassinyio/cassiny-watcher/
-  cassiny-auth:
+  cassiny-watcher:
     image: cassinyio/cassiny-watcher:204dee2
     networks:
       - cassiny-private
